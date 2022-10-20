@@ -1,2 +1,2 @@
-# DS2022_30243_Cusco_Ana_Maria_Assignment_1_Backend\
+# DS2022_30243_Cusco_Ana_Maria_Assignment_1_Backend
 First SD Assignment
