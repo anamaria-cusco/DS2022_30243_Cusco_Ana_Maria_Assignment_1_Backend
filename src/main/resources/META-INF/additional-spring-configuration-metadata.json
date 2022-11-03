@@ -1,0 +1,48 @@
+{
+  "properties": [
+    {
+      "name": "database.ip",
+      "type": "java.lang.String",
+      "description": "Description for database.ip."
+    },
+    {
+      "name": "database.user",
+      "type": "java.lang.String",
+      "description": "Description for database.user."
+    },
+    {
+      "name": "database.password",
+      "type": "java.lang.String",
+      "description": "Description for database.password."
+    },
+    {
+      "name": "database.name",
+      "type": "java.lang.String",
+      "description": "Description for database.name."
+    },
+    {
+      "name": "database.port",
+      "type": "java.lang.String",
+      "description": "Description for database.port."
+    },
+    {
+      "name": "app.jwtSecret",
+      "type": "java.lang.String",
+      "description": "Description for app.jwtSecret."
+    },
+    {
+      "name": "security.basic.enable",
+      "type": "java.lang.String",
+      "description": "Description for security.basic.enable."
+    },
+    {
+      "name": "security.ignored",
+      "type": "java.lang.String",
+      "description": "Description for security.ignored."
+    },
+    {
+      "name": "app.jwtExpirationMs",
+      "type": "java.lang.String",
+      "description": "Description for app.jwtExpirationMs."
+    }
+  ] }
