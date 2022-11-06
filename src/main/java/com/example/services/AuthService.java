@@ -29,6 +29,7 @@ public class AuthService  {
 
     public void register(SignupRequest signUpRequest) {
         User user = User.builder()
+                .name(signUpRequest.getName())
                 .username(signUpRequest.getUsername())
                 .password(encoder.encode(signUpRequest.getPassword()))
                 .email(signUpRequest.getEmail())

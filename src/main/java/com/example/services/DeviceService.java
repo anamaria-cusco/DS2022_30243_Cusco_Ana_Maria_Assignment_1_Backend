@@ -62,4 +62,15 @@ public class DeviceService {
         return device.getId();
     }
 
+    public void deleteAllDevices (){
+        deviceRepository.deleteAll();
+        LOGGER.debug("Oops .. All devices were deleted");
+    }
+
+    public List<DeviceDTO> searchDevicesByDescription (String description){
+        return deviceRepository.findDevicesByDescriptionContaining(description).stream()
+                .map(DeviceBuilder::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

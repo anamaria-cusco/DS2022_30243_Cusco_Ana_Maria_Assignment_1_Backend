@@ -1,8 +1,11 @@
 package com.example.dtos;
 
+import com.example.controllers.AdminController;
 import com.example.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +19,7 @@ import java.util.*;
 public class UserDetailsImpl implements UserDetails {
 
     private User user;
-
+    final Logger LOGGER = LoggerFactory.getLogger(UserDetailsImpl.class);
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.<GrantedAuthority>of(new SimpleGrantedAuthority(user.getRole().toString()));

@@ -46,7 +46,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             // Get jwt token and validate
             final String token = header.split(" ")[1].trim();
-            LOGGER.info("Token:"+token);
             if (!jwtTokenUtil.validate(token)) {
                 filterChain.doFilter(request, response);
                 return;

@@ -6,6 +6,7 @@ import com.example.dtos.UserDTO;
 import com.example.dtos.UserDetailsImpl;
 import com.example.dtos.builders.UserBuilder;
 import com.example.security.JwtTokenUtil;
+import com.example.security.requests.JwtResponse;
 import com.example.security.requests.LoginRequest;
 import com.example.security.requests.SignupRequest;
 import com.example.services.AuthService;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -43,7 +45,7 @@ public class AuthController {
     final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping(UrlMapping.SIGN_IN)
-    public  ResponseEntity<UserDTO> login(@Valid @RequestBody LoginRequest request) {
+    public  ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest request) {
 
         try {
             Authentication authenticate = authenticationManager
@@ -54,14 +56,18 @@ public class AuthController {
                     );
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authenticate.getPrincipal();
-            return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtTokenUtil.generateAccessToken(userDetails)
-                    )
-                    .body(
-                            UserBuilder.toDto(userDetails.getUser())
-                    );
+            String jwt = jwtTokenUtil.generateAccessToken(userDetails);
+            LOGGER.error(userDetails.getAuthorities().toString());
+            return ResponseEntity.ok(
+                    JwtResponse.builder()
+                            .token(jwt)
+                            .id(userDetails.getUser().getId())
+                            .username(userDetails.getUsername())
+                            .email(userDetails.getUser().getEmail())
+                            .role(userDetails.getUser().getRole())
+                            .build()
+            );
+
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -81,7 +87,6 @@ public class AuthController {
                     .badRequest()
                     .body("Error: Email is already in use!");
         }
-        System.out.println("hello from register!");
         authService.register(signUpRequest);
 
 

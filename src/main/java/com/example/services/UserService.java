@@ -12,6 +12,9 @@ import com.example.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,11 +55,17 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserDTO> searchUsersByName (String name){
+        return userRepository.findUserByNameContaining(name).stream()
+                .map(UserBuilder::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Long updateUser (Long userID, UserDTO userDTO){
         User foundUser = userRepository.findById(userID)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id {} was not found in db",userID));
         LOGGER.error(foundUser.getId().toString());
-        foundUser = UserBuilder.update(foundUser, userDTO);
+        UserBuilder.update(foundUser, userDTO);
         LOGGER.debug("User with id {} was updated in db", foundUser.getId());
         userRepository.save(foundUser);
 
@@ -70,10 +79,16 @@ public class UserService implements UserDetailsService {
         LOGGER.debug("User with id {} was deleted", user.getId());
         return user.getId();
     }
+
+    public void deleteAllUsers(){
+        userRepository.deleteAll();
+        LOGGER.debug("Oops..All users were deleted");
+    }
+
+
     public List<DeviceDTO> getDevices(Long userID){
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id {} was not found in db",userID));
-        System.out.println(user.getUsername());
         Set<Device> deviceList = user.getDevices();
         System.out.println(deviceList);
         return deviceList.stream()
