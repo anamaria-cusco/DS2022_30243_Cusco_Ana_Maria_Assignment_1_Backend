@@ -22,7 +22,7 @@ public class UserDetailsImpl implements UserDetails {
     final Logger LOGGER = LoggerFactory.getLogger(UserDetailsImpl.class);
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.<GrantedAuthority>of(new SimpleGrantedAuthority(user.getRole().toString()));
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
     @Override

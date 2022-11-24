@@ -33,6 +33,12 @@ public class DeviceService {
                 .orElseThrow(() -> new ResourceNotFoundException("Device with id {} not found", id)));
     }
 
+    public String findUserUsernameForDevice(Long id){
+        Device device = deviceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Device with id {} not found", id));
+        return device.getUser().getUsername();
+    }
+
     public Long addDevice(Long userID, DeviceDTO deviceDTO) {
         System.out.println("Before:"+deviceDTO.getMaxConsumption());
         User user = userRepository.findById(userID)

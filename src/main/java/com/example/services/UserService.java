@@ -90,7 +90,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id {} was not found in db",userID));
         Set<Device> deviceList = user.getDevices();
-        System.out.println(deviceList);
         return deviceList.stream()
                 .map(DeviceBuilder::toDto)
                 .collect(Collectors.toList());

@@ -46,7 +46,7 @@ public class AuthController {
 
     @PostMapping(UrlMapping.SIGN_IN)
     public  ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest request) {
-
+        LOGGER.error("Log in");
         try {
             Authentication authenticate = authenticationManager
                     .authenticate(
@@ -54,9 +54,10 @@ public class AuthController {
                                     request.getUsername(), request.getPassword()
                             )
                     );
-
+            LOGGER.error("before user details");
             UserDetailsImpl userDetails = (UserDetailsImpl) authenticate.getPrincipal();
             String jwt = jwtTokenUtil.generateAccessToken(userDetails);
+
             LOGGER.error(userDetails.getAuthorities().toString());
             return ResponseEntity.ok(
                     JwtResponse.builder()

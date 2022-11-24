@@ -24,9 +24,9 @@ public class Device {
     private String address;
 
     @Column(name = "max_consumption", nullable = false)
-    private double maxConsumption;
+    private float maxConsumption;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 

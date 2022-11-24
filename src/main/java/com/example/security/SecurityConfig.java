@@ -1,6 +1,5 @@
 package com.example.security;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 
 @RequiredArgsConstructor
@@ -51,13 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // // Enable CORS and disable CSRF
-          http.cors().and().csrf().disable()
-                  .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                  .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                  .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                  .antMatchers("/api/all").permitAll()
-                  .antMatchers("/devices/{id}").access("hasAuthority('CLIENT')")
-                  .anyRequest().authenticated();
+        http.cors().and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/ws-message/**").permitAll()
+                .antMatchers("/api/all").permitAll()
+                .anyRequest().authenticated();
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -76,8 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("*");
+                        .allowCredentials(true)
+                        .allowedMethods(CorsConfiguration.ALL)
+                        .allowedHeaders(CorsConfiguration.ALL)
+                        .allowedOriginPatterns(CorsConfiguration.ALL);
             }
         };
     }
+
+
 }

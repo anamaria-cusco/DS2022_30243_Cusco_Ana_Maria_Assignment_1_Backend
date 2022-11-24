@@ -1,6 +1,7 @@
 package com.example.dtos;
 
 
+import com.example.entities.Device;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
