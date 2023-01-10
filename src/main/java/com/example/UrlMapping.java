@@ -4,6 +4,7 @@ public class UrlMapping {
     public static final String API_PATH = "api";
     public static final String ID = "/{id}";
     public static final String ALL = "/all";
+    public static final String ROLE = "/{role}";
 
     //AUTH CONTROLLER
     public static final String AUTH = API_PATH + "/auth";
@@ -40,9 +41,10 @@ public class UrlMapping {
     public static final String ADD_MONITORED_VALUE =  "/add" + ID;
 
     //USER CONTROLLER
+
     public static final String CLIENT = API_PATH  + "/user";
     public static final String USER_DEVICES = "/devices"+ID;
     public static final String DAILY_CONSUMPTION = DEVICE + ID  + "/daily_consumption" + DATE;
-
+    public static final String USERS_BY_ROLE = ROLE + ALL;
 
 }

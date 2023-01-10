@@ -7,6 +7,7 @@ import com.example.dtos.UserDetailsImpl;
 import com.example.dtos.builders.DeviceBuilder;
 import com.example.dtos.builders.UserBuilder;
 import com.example.entities.Device;
+import com.example.entities.Role;
 import com.example.entities.User;
 import com.example.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -50,6 +51,13 @@ public class UserService implements UserDetailsService {
     public List<UserDTO> findAllUsers(){
         List<User> userList = userRepository.findAll();
         System.out.println(userList);
+        return userList.stream()
+                .map(UserBuilder::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDTO> findUsersByRole(Role role){
+        List<User> userList = userRepository.findUsersByRole(role);
         return userList.stream()
                 .map(UserBuilder::toDto)
                 .collect(Collectors.toList());
